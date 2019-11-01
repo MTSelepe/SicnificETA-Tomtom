@@ -1,0 +1,25 @@
+def geocodes_from_addresses_mapbox(addresse_geo, API_key):
+    geocodes = []
+    tomtom_geocodes = ""
+    lat = ""
+    long = ""
+    g_API_key = "AIzaSyCNSyD13siR0AvcuoKMBntWw_b0xz_n_AQ"
+    for address in addresse_geo:
+        g = geocoder.mapbox(address, key=API_key)
+        r = g.json
+        if g.ok == False:
+            g = geocoder.google(address, key=g_API_key)
+            r = g.json
+            if g.ok == False:
+                print(g.status,g.location)
+            else:
+                lat = r["lat"]
+                long = r["lng"]
+        else:
+            lat = r["lat"]
+            long = r["lng"]
+                    
+        geocodes.append([lat, long])
+        tomtom_geocodes += "{},{}:".format(lat, long)
+    
+    return geocodes, tomtom_geocodes
